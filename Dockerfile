@@ -1,9 +1,10 @@
 ARG codename=focal
-ARG python_version=3.7
 
 FROM ubuntu:$codename
 ENV LANG C.UTF-8
 USER root
+
+ARG python_version="3.7"
 
 # Basic dependencies
 RUN apt-get update -qq \
