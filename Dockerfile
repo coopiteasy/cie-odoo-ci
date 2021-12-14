@@ -1,4 +1,5 @@
 ARG codename=focal
+ARG python_version=3.7
 
 FROM ubuntu:$codename
 ENV LANG C.UTF-8
@@ -35,12 +36,16 @@ RUN add-apt-repository -y ppa:git-core/ppa \
     && apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -qq git
 
+# Make all Python versions available
+RUN add-apt-repository -y ppa:deadsnakes/ppa
+
 # Install build dependencies for python libs commonly used by Odoo and OCA
 RUN apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends \
        build-essential \
+       python$python_version-dev \
        python3 \
-       python3-dev \
+       python3 \
        python3-venv \
        # for psycopg
        libpq-dev \
@@ -95,7 +100,7 @@ RUN /usr/local/bin/refresh_gitaggregate.py
 
 # Make a virtualenv for Odoo so we isolate from system python dependencies and
 # make sure addons we test declare all their python dependencies properly
-RUN virtualenv -p python3 /opt/odoo-venv \
+RUN virtualenv -p python$python_version /opt/odoo-venv \
     && /opt/odoo-venv/bin/pip install --no-cache-dir "setuptools<58.0.0" "pip>=21.3.1;python_version>='3.6'" \
     && /opt/odoo-venv/bin/pip list
 ENV PATH=/opt/odoo-venv/bin:$PATH
