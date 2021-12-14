@@ -45,7 +45,6 @@ RUN apt-get update -qq \
        build-essential \
        python$python_version-dev \
        python3 \
-       python3 \
        python3-venv \
        # for psycopg
        libpq-dev \
