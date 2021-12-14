@@ -86,21 +86,11 @@ RUN pipx install --pip-args="--no-cache-dir" "setuptools-odoo>=3.0.1"
 
 # Install git-aggregator
 RUN pipx install --pip-args="--no-cache-dir" git-aggregator==2.1.0
-RUN git config --global user.name "Coop IT Easy" \
-    && git config --global user.email "gitaggregate@coopiteasy.be" \
-    && git config --global pull.rebase false
 
-# Fetch repos.yml and adjust the SSH links to HTTPS links.
-# ADD https://gitlab.com/coopiteasy/cie-repositories/-/raw/master/custom-twelve-mutu/repositories-12-test.yml /tmp/repos_orig.yml
-# COPY convert_yaml.py /tmp/convert_yaml.py
-# RUN /usr/bin/python3 convert_yaml.py /tmp/repos_orig.yml /tmp/repos.yml
+# Make scripts available
+COPY bin/* /usr/local/bin/
 
 # Gitaggregate
-RUN mkdir /src
-# RUN cd /src \
-#     && gitaggregate -c /tmp/repos.yml --job 4 --force
-
-COPY bin/* /usr/local/bin/
 RUN /usr/local/bin/refresh_gitaggregate.py
 
 # Make a virtualenv for Odoo so we isolate from system python dependencies and
