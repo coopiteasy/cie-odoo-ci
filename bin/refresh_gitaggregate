@@ -6,10 +6,10 @@ import subprocess
 
 
 def main():
-    subprocess.run(["download_repos.py", "/tmp/repos_orig.yml"], check=True)
+    subprocess.run(["download_repos", "/tmp/repos_orig.yml"], check=True)
 
     subprocess.run(
-        ["convert_yaml.py", "/tmp/repos_orig.yml", "/tmp/repos.yml"], check=True
+        ["convert_yaml", "/tmp/repos_orig.yml", "/tmp/repos.yml"], check=True
     )
 
     # Set the correct config values for gitaggregate to function.

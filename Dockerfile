@@ -83,7 +83,6 @@ RUN pipx install --pip-args="--no-cache-dir" "manifestoo>=0.3.1"
 # Install the 'addons' helper script
 # TODO: use manifestoo
 RUN pipx install --pip-args="--no-cache-dir" acsoo==3.0.2
-# COPY bin/addons /usr/local/bin
 
 # Install setuptools-odoo-get-requirements and setuptools-odoo-makedefault helper
 # scripts.
@@ -96,7 +95,7 @@ RUN pipx install --pip-args="--no-cache-dir" git-aggregator==2.1.0
 COPY bin/* /usr/local/bin/
 
 # Gitaggregate
-RUN /usr/local/bin/refresh_gitaggregate.py
+RUN /usr/local/bin/refresh_gitaggregate
 
 # Make a virtualenv for Odoo so we isolate from system python dependencies and
 # make sure addons we test declare all their python dependencies properly
