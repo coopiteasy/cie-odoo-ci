@@ -110,11 +110,8 @@ ENV PATH=/opt/odoo-venv/bin:$PATH
 
 ARG odoo_version=12.0
 
-# Install psycopg2 from source.
-RUN pip install --no-cache-dir --no-binary psycopg2
-
 # Install requirements of Odoo and addons.
-RUN find /src -name "requirements.txt" | xargs -I {} pip install --no-cache-dir -r {}
+RUN find /src -name "requirements.txt" | xargs -I {} pip install --no-cache-dir --no-binary psycopg2 -r {}
 
 # Install other test requirements.
 # - coverage
