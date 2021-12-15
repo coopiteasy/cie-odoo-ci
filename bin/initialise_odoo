@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+
+import argparse
+import os
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("addons_dir")
+    parser.add_argument("--include")
+    parser.add_argument("--exclude")
+
+    args = parser.parse_args()
+
+    addons = subprocess.run(
+        [
+            "acsoo",
+            "addons",
+            "--addons-dir",
+            args.addons_dir,
+            "--include",
+            args.include,
+            "--exclude",
+            args.exclude,
+            "list-depends",
+        ],
+        check=True,
+    )
+
+    subprocess.run(
+        [
+            "odoo",
+            "-d",
+            os.environ["PGDATABASE"],
+            "-i",
+            addons,
+            "--stop-after-init",
+        ],
+        check=True,
+    )
+
+
+if __name__ == "__main__":
+    main()
