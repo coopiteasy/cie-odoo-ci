@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Coop IT Easy SCRLfs
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 ARG codename=focal
 
 FROM ubuntu:$codename
