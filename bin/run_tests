@@ -7,6 +7,7 @@
 import argparse
 import os
 import subprocess
+import sys
 
 
 def main():
@@ -33,7 +34,7 @@ def main():
         stdout=subprocess.PIPE,
     ).stdout
 
-    subprocess.run(
+    return subprocess.run(
         [
             "odoo",
             "-d",
@@ -43,9 +44,8 @@ def main():
             "--test-enable",
             "--stop-after-init",
         ],
-        check=True,
-    )
+    ).returncode
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
