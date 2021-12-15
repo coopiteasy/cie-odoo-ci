@@ -30,6 +30,7 @@ def main():
             "list",
         ],
         check=True,
+        stdout=subprocess.PIPE,
     )
 
     subprocess.run(
@@ -38,7 +39,7 @@ def main():
             "-d",
             os.environ["PGDATABASE"],
             "-i",
-            addons,
+            addons.stdout.rstrip("\n"),
             "--test-enable",
             "--stop-after-init",
         ],
