@@ -110,12 +110,11 @@ ENV PATH=/opt/odoo-venv/bin:$PATH
 
 ARG odoo_version=12.0
 
-# Install Odoo requirements (use ADD for correct layer caching).
-# We use requirements from OCB for easier maintenance of older versions.
-# We use no-binary for psycopg2 because its binary wheels are sometimes broken
-# and not very portable.
-ADD https://raw.githubusercontent.com/OCA/OCB/$odoo_version/requirements.txt /tmp/ocb-requirements.txt
-RUN pip install --no-cache-dir --no-binary psycopg2 -r /tmp/ocb-requirements.txt
+# Install psycopg2 from source.
+RUN pip install --no-cache-dir --no-binary psycopg2
+
+# Install requirements of Odoo and addons.
+RUN find /src -name "requirements.txt" | xargs -I {} pip install --no-cache-dir -r {}
 
 # Install other test requirements.
 # - coverage
@@ -125,16 +124,6 @@ RUN pip install --no-cache-dir \
   coverage \
   websocket-client \
   "odoo-autodiscover>=2 ; python_version<'3'"
-
-# Install Odoo (use ADD for correct layer caching)
-# ARG odoo_org_repo=odoo/odoo
-# ADD https://api.github.com/repos/$odoo_org_repo/git/refs/heads/$odoo_version /tmp/odoo-version.json
-# RUN mkdir /tmp/getodoo \
-#     && (curl -sSL https://github.com/$odoo_org_repo/tarball/$odoo_version | tar -C /tmp/getodoo -xz) \
-#     && mv /tmp/getodoo/* /opt/odoo \
-#     && rmdir /tmp/getodoo
-# RUN pip install --no-cache-dir -e /opt/odoo \
-#     && pip list
 
 # Install Odoo
 RUN pip install --no-cache-dir -e /src/odoo \
