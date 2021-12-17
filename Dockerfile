@@ -9,6 +9,7 @@ ENV LANG C.UTF-8
 USER root
 
 ARG python_version="3.7"
+ARG odoo_version="12.0"
 
 # Basic dependencies
 RUN apt-get update -qq \
@@ -99,7 +100,7 @@ RUN pipx install --pip-args="--no-cache-dir" git-aggregator==2.1.0
 COPY bin/* /usr/local/bin/
 
 # Gitaggregate
-RUN /usr/local/bin/refresh_gitaggregate
+RUN /usr/local/bin/refresh_gitaggregate --odoo_version $odoo_version
 
 # Make a virtualenv for Odoo so we isolate from system python dependencies and
 # make sure addons we test declare all their python dependencies properly
@@ -107,8 +108,6 @@ RUN virtualenv -p python$python_version /opt/odoo-venv \
     && /opt/odoo-venv/bin/pip install --no-cache-dir "setuptools<58.0.0" "pip>=21.3.1;python_version>='3.6'" \
     && /opt/odoo-venv/bin/pip list
 ENV PATH=/opt/odoo-venv/bin:$PATH
-
-ARG odoo_version=12.0
 
 # Install requirements of Odoo and addons.
 RUN find /src -name "requirements.txt" | xargs -I {} pip install --no-cache-dir --no-binary psycopg2 -r {}

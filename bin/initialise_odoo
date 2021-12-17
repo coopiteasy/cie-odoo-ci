@@ -12,8 +12,8 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("addons_dir")
-    parser.add_argument("--include")
-    parser.add_argument("--exclude")
+    parser.add_argument("--include", default="")
+    parser.add_argument("--exclude", default="")
 
     args = parser.parse_args()
 
@@ -24,9 +24,9 @@ def main():
             "--addons-dir",
             args.addons_dir,
             "--include",
-            str(args.include or ""),
+            args.include,
             "--exclude",
-            str(args.exclude or ""),
+            args.exclude,
             "list-depends",
         ],
         check=True,

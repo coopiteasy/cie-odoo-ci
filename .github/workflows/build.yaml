@@ -11,11 +11,23 @@ on:
     tags:
       - "v*"
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "0 4 * * 1"
 
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - odoo_version: "11.0"
+            python_version: "3.6"
+          - odoo_version: "12.0"
+            python_version: "3.6"
+          - odoo_version: "12.0"
+            python_version: "3.7"
+          - odoo_version: "12.0"
+            python_version: "3.8"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v1
@@ -34,15 +46,16 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=edge,prefix={{ matrix.odoo_version }}-{{ matrix.python_version }}-,branch=$repo.default_branch
+            type=semver,pattern={{ matrix.odoo_version }}.{{ version }}-{{ matrix.python_version }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
+          build-args: |
+            python_version=${{ matrix.python_version }}
+            odoo_version=${{ matrix.odoo_version }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
