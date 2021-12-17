@@ -100,7 +100,7 @@ RUN pipx install --pip-args="--no-cache-dir" git-aggregator==2.1.0
 COPY bin/* /usr/local/bin/
 
 # Gitaggregate
-RUN /usr/local/bin/refresh_gitaggregate --odoo_version $odoo_version
+RUN /usr/local/bin/refresh_gitaggregate --odoo-version $odoo_version
 
 # Make a virtualenv for Odoo so we isolate from system python dependencies and
 # make sure addons we test declare all their python dependencies properly
