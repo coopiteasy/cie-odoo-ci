@@ -16,7 +16,7 @@ def main():
     args = parser.parse_args()
 
     if args.odoo_version == "11.0":
-        url = "https://gitlab. com/coopiteasy/cie-repositories/-/raw/master/custom-eleven-mutu/repositories-11-test.yml"
+        url = "https://gitlab.com/coopiteasy/cie-repositories/-/raw/master/custom-eleven-mutu/repositories-11-test.yml"
     elif args.odoo_version == "12.0":
         url = "https://gitlab.com/coopiteasy/cie-repositories/-/raw/master/custom-twelve-mutu/repositories-12-test.yml"
     response = urllib.request.urlopen(url)
