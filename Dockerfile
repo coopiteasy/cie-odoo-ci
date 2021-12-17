@@ -68,6 +68,8 @@ RUN apt-get update -qq \
        libcups2-dev \
        # some libs need swig
        swig \
+       # Py3.8 needs this. Not sure why.
+       libgeos-dev \
        # PyYAML for own scripts
        python3-yaml
 
