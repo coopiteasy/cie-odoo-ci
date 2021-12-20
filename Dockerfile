@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2021 Coop IT Easy SCRLfs
+# Copyright (c) 2021 Stéphane Bidoul
+# Copyright (c) 2021 ACSONE SA/NV
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: MIT AND AGPL-3.0-or-later
 
 ARG codename=focal
 
