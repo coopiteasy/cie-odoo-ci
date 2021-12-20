@@ -10,9 +10,6 @@ FROM ubuntu:$codename
 ENV LANG C.UTF-8
 USER root
 
-ARG python_version="3.7"
-ARG odoo_version="12.0"
-
 # Basic dependencies
 RUN apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends \
@@ -46,6 +43,8 @@ RUN add-apt-repository -y ppa:git-core/ppa \
 
 # Make all Python versions available
 RUN add-apt-repository -y ppa:deadsnakes/ppa
+
+ARG python_version="3.7"
 
 # Install build dependencies for python libs commonly used by Odoo and OCA
 RUN apt-get update -qq \
@@ -102,6 +101,8 @@ RUN pipx install --pip-args="--no-cache-dir" git-aggregator==2.1.0
 
 # Make scripts available
 COPY bin/* /usr/local/bin/
+
+ARG odoo_version="12.0"
 
 # Gitaggregate
 RUN /usr/local/bin/refresh_gitaggregate --odoo-version $odoo_version
