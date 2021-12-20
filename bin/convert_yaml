@@ -35,7 +35,10 @@ def remove_all_private(config):
     for addon_dir in config:
         remotes = config[addon_dir]["remotes"]
         for value in remotes.values():
-            if "private-module" in value:
+            if any(
+                substring in value
+                for substring in ("private-module", "lefournil-custom")
+            ):
                 to_remove.add(addon_dir)
     for addon_dir in to_remove:
         config.pop(addon_dir)
